@@ -1,11 +1,19 @@
 import java.util.HashMap;
 
 public class DamnMinMax {
+    private static final boolean LOG_VALUES = false;
+
     private static final int WIN = 1;
     private static final int LOSE = -1;
     private static final int UNSOLVED = 0;
 
     private HashMap<Board, Integer> boardValueMap;
+
+    private final int thoughtDepth;
+
+    public DamnMinMax(int thoughtDepth) {
+        this.thoughtDepth = thoughtDepth;
+    }
 
     public int minimax(Board b, Player p, Player o, int depth, Boolean isMax) {
         int score = value(b, p, o);
@@ -14,8 +22,7 @@ public class DamnMinMax {
 
         Integer cacheScore = boardValueMap.get(b);
         if (null != cacheScore) {
-            if (depth < 3 ||
-                depth > 10) {
+            if (LOG_VALUES) {
                 System.out.println("depth: " + depth);
                 b.print();
                 System.out.println("cacheScore: " + cacheScore);
@@ -29,7 +36,8 @@ public class DamnMinMax {
         if (LOSE == score)
             return score;
 
-        if (0 >= b.getVacancies())
+        if (0 >= b.getVacancies() ||
+            depth >= thoughtDepth)
             return UNSOLVED;
 
         int best;

@@ -14,14 +14,14 @@ public class Player {
         this.ai = null;
     }
 
-    public Player(char id, Scanner sc) {
+    public Player(char id, Scanner sc, int thoughtDepth) {
         if (Board.INVALID == id ||
             DRAW.id == id)
             throw new IllegalArgumentException();
 
         this.id = id;
         this.sc = sc;
-        this.ai = new DamnMinMax();
+        this.ai = new DamnMinMax(thoughtDepth);
     }
 
     public void turn(Board b) {
